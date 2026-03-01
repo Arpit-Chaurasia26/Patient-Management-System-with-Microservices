@@ -1,0 +1,13 @@
+target/
+.git/
+.gitignore
+.idea/
+*.iml
+HELP.md
+README.md
+node_modules/
+Dockerfile.*
+docker-compose.yml
+.env
+.env.*
+
