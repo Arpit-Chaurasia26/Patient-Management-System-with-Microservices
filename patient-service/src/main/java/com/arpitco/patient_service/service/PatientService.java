@@ -8,6 +8,7 @@ import com.arpitco.patient_service.dto.PatientRequestDTO;
 import com.arpitco.patient_service.dto.PatientResponseDTO;
 import com.arpitco.patient_service.exception.EmailAlreadyExistsException;
 import com.arpitco.patient_service.exception.PatientNotFoundException;
+import com.arpitco.patient_service.grpc.BillingServiceGrpcClient;
 import com.arpitco.patient_service.mapper.PatientMapper;
 import com.arpitco.patient_service.model.Patient;
 import com.arpitco.patient_service.repository.PatientRepository;
@@ -17,9 +18,11 @@ import org.springframework.stereotype.Service;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
 
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient) {
         this.patientRepository = patientRepository;
+        this.billingServiceGrpcClient=billingServiceGrpcClient;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -38,9 +41,9 @@ public class PatientService {
         Patient newPatient = patientRepository.save(
                 PatientMapper.toModel(patientRequestDTO));
 
-//        billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),
-//                newPatient.getName(), newPatient.getEmail());
-//
+        billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),
+                newPatient.getName(), newPatient.getEmail());
+
 //        kafkaProducer.sendEvent(newPatient);
 
         return PatientMapper.toDTO(newPatient);
