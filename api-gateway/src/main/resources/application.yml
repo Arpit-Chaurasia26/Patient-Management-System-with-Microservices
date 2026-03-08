@@ -25,7 +25,7 @@ spring:
             - Path=/api/patients/**
           filters:
             - StripPrefix=1
-        #            - JwtValidation
+            - JwtValidation
 
 
         # swagger is not working in patient-service module
@@ -46,3 +46,4 @@ spring:
             - Path=/api-docs/auth
           filters:
             - RewritePath=/api-docs/auth,/v3/api-docs
+
